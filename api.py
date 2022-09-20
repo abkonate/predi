@@ -104,35 +104,35 @@ con_variable_trans = load(open('data/scaler_continu.pkl', 'rb'))
 
 object_variable_trans = load(open('data/scaler_object.pkl', 'rb'))
 
-cat_col_transformation = {}
+#cat_col_transformation = {}
 
 
-cat_col_transformation['EMERGENCYSTATE_MODE'] =  load(open('data/EMERGENCYSTATE_MODE.pkl', 'rb'))
-cat_col_transformation['OCCUPATION_TYPE'] = load(open('data/OCCUPATION_TYPE.pkl', 'rb'))
-cat_col_transformation['NAME_TYPE_SUITE'] =  load(open('data/NAME_TYPE_SUITE.pkl', 'rb'))
-cat_col_transformation['NAME_CONTRACT_TYPE']=  load(open('data/NAME_CONTRACT_TYPE.pkl', 'rb'))
-cat_col_transformation['CODE_GENDER'] =  load(open('data/CODE_GENDER.pkl', 'rb'))
-cat_col_transformation['FLAG_OWN_CAR']= load(open('data/FLAG_OWN_CAR.pkl', 'rb'))
-cat_col_transformation['FLAG_OWN_REALTY'] =  load(open('data/FLAG_OWN_REALTY.pkl', 'rb'))
-cat_col_transformation['WEEKDAY_APPR_PROCESS_START'] =  load(open('data/WEEKDAY_APPR_PROCESS_START.pkl', 'rb'))
-cat_col_transformation['ORGANIZATION_TYPE']=  load(open('data/ORGANIZATION_TYPE.pkl', 'rb'))
-cat_col_transformation['NAME_FAMILY_STATUS']  = load(open('data/NAME_FAMILY_STATUS.pkl', 'rb'))
-cat_col_transformation['NAME_EDUCATION_TYPE'] =  load(open('data/NAME_EDUCATION_TYPE.pkl', 'rb'))
-cat_col_transformation['NAME_INCOME_TYPE']= load(open('data/NAME_INCOME_TYPE.pkl', 'rb'))
+#cat_col_transformation['EMERGENCYSTATE_MODE'] =  load(open('data/EMERGENCYSTATE_MODE.pkl', 'rb'))
+#cat_col_transformation['OCCUPATION_TYPE'] = load(open('data/OCCUPATION_TYPE.pkl', 'rb'))
+#cat_col_transformation['NAME_TYPE_SUITE'] =  load(open('data/NAME_TYPE_SUITE.pkl', 'rb'))
+#cat_col_transformation['NAME_CONTRACT_TYPE']=  load(open('data/NAME_CONTRACT_TYPE.pkl', 'rb'))
+#cat_col_transformation['CODE_GENDER'] =  load(open('data/CODE_GENDER.pkl', 'rb'))
+#cat_col_transformation['FLAG_OWN_CAR']= load(open('data/FLAG_OWN_CAR.pkl', 'rb'))
+#cat_col_transformation['FLAG_OWN_REALTY'] =  load(open('data/FLAG_OWN_REALTY.pkl', 'rb'))
+#cat_col_transformation['WEEKDAY_APPR_PROCESS_START'] =  load(open('data/WEEKDAY_APPR_PROCESS_START.pkl', 'rb'))
+#cat_col_transformation['ORGANIZATION_TYPE']=  load(open('data/ORGANIZATION_TYPE.pkl', 'rb'))
+#cat_col_transformation['NAME_FAMILY_STATUS']  = load(open('data/NAME_FAMILY_STATUS.pkl', 'rb'))
+#cat_col_transformation['NAME_EDUCATION_TYPE'] =  load(open('data/NAME_EDUCATION_TYPE.pkl', 'rb'))
+#cat_col_transformation['NAME_INCOME_TYPE']= load(open('data/NAME_INCOME_TYPE.pkl', 'rb'))
 
 
 from sklearn.preprocessing import StandardScaler, MinMaxScaler 
 
-scaler = load(open('scaler_metric.pkl', 'rb'))
+#scaler = load(open('scaler_metric.pkl', 'rb'))
 
-from lightgbm import LGBMClassifier as lgb
-import joblib
+#from lightgbm import LGBMClassifier as lgb
+#import joblib
 
 
-model1 =  joblib.load('model1.pkl')
-model2 =  joblib.load('model2.pkl')
-model3 =  joblib.load('model3.pkl')
-model4 =  joblib.load('model4.pkl') 
+#model1 =  joblib.load('model1.pkl')
+#model2 =  joblib.load('model2.pkl')
+#model3 =  joblib.load('model3.pkl')
+#model4 =  joblib.load('model4.pkl') 
 
 
 class Item(BaseModel):
@@ -461,7 +461,7 @@ class EMERGENCYSTATE_MODE(str, Enum):
     No = "No"
     Yes = "Yes"
     
-@app.get("/pred")
+@app.get("/")
 def empByCountryName(flag_mobil:Union[FLAG_MOBIL,None]= None, FLAG_EMP_PHONE:Union[FLAG_EMP_PHONE,None]= None,\
                      flag_CONT_MOBILE:Union[FLAG_CONT_MOBILE,None]= None, FLAG_WORK_PHONE:Union[FLAG_WORK_PHONE,None]= None,\
                      FLAG_PHONE:Union[FLAG_PHONE,None]= None, FLAG_EMAIL:Union[FLAG_EMAIL,None]= None,\
@@ -572,20 +572,17 @@ def empByCountryName(flag_mobil:Union[FLAG_MOBIL,None]= None, FLAG_EMP_PHONE:Uni
 
     data[discrete_var] = discrete_variable_trans.transform(data[discrete_var])
 
-    for col in var_objet:
-      data[col] = cat_col_transformation[col].transform(data[col])
+    #for col in var_objet:
+    #  data[col] = cat_col_transformation[col].transform(data[col])
         
     
     print(data[var_objet])
 
 
-    data = scaler.transform(data)
+    #data = scaler.transform(data)
 
-    proba_estimation = (model1.predict_proba(data) + model2.predict_proba(data) +model3.predict_proba(data) +model4.predict_proba(data))/4
+    #proba_estimation = (model1.predict_proba(data) + model2.predict_proba(data) +model3.predict_proba(data) +model4.predict_proba(data))/4
 
     #print(proba_estimation[0][1])
 
-    return {'la probabilte du risque':  proba_estimation[0][1]}
-
-
-
+    return values_dict   #{'la probabilte du risque':  proba_estimation[0][1]}
